@@ -1,5 +1,3 @@
-
-
 <%-- Include tag is used to import header page --%>
 <%@ include file="header.jsp" %>
 <%-- Code to display items in List --%>

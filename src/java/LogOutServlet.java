@@ -30,7 +30,7 @@ public class LogOutServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         request.getSession().invalidate();
-        response.sendRedirect(request.getContextPath() + "/header.jsp");
+        response.sendRedirect(request.getContextPath() + "/LogoutResult.jsp");
         
         
         

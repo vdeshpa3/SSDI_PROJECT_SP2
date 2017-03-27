@@ -8,7 +8,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <%-- title of the Page--%>
-        <title>SSDI_Project</title>
+        <title>Click &AMP; Connect</title>
         <%-- importing CSS stylesheet --%>
         <link rel="stylesheet" href="main.css">
     </head>
@@ -17,7 +17,7 @@
         <div id="header">
             <nav id="header_menu">
                 <ul  class="left" >
-                    <li>SSDI_Project</li>
+                    <li>Click &AMP; Connect</li>
                 </ul>
                 <ul class="right">
                     <c:if test="${email == null}">

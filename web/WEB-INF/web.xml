@@ -15,6 +15,10 @@
         <servlet-name>LogOutServlet</servlet-name>
         <servlet-class>LogOutServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>RegisterUser</servlet-name>
+        <servlet-class>RegisterUser</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginValidation</servlet-name>
         <url-pattern>/LoginValidation</url-pattern>
@@ -26,6 +30,10 @@
     <servlet-mapping>
         <servlet-name>LogOutServlet</servlet-name>
         <url-pattern>/LogOutServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RegisterUser</servlet-name>
+        <url-pattern>/RegisterUser</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

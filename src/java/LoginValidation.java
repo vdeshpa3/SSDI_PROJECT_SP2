@@ -76,7 +76,11 @@ public class LoginValidation extends HttpServlet {
             System.out.println("Please enter correct credentials to login ");
         }
     }
-}/*
+}
+    
+    
+    
+    /*
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
