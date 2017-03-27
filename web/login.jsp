@@ -12,8 +12,6 @@
         <input type="email" name="email" required/> <br>
         <label >Password *</label>
         <input type="password" name="password" required/><br>
-        <label >Contact Numbers  *</label>
-        <input type="text" name="contact_number" required/> <br>
         <label>&nbsp;</label>
         <input type="submit" value="Log in" id="login_button" >
         <br>

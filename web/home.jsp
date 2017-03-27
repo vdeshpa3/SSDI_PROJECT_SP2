@@ -4,7 +4,7 @@
 
 <section id="home_page">
     <%-- Img tag is used to import image --%>
-    <img src="images/home_image.png" alt="Home" />
+    <img src="C:\Users\Viranchi\Downloads\project group.jpeg" alt="Home" />
 </section>
 <%-- Include tag is used to import footer page --%>
 <%@ include file="footer.jsp" %>

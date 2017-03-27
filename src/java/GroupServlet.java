@@ -9,6 +9,7 @@ import java.io.PrintWriter;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -38,32 +39,43 @@ public class GroupServlet extends HttpServlet {
         
         String group_name = request.getParameter("search_group");
         boolean flag = false;
-        try{
-        DbManager db = new DbManager();
-        java.sql.Connection conn = db.getConnection();
-        if(conn == null)
+        try
         {
-	System.out.println("Connection not established");
-        }else
-        {
-            System.out.println("Connection Established");
-            PreparedStatement pst = conn.prepareStatement("SELECT * FROM groups WHERE g_name like '%" + group_name + "%'");
-            //pst.setString(1, group_name);
-          //  pst.setString(2, pass);
-            ResultSet rs = pst.executeQuery();
-            if (rs.next()) {
-                System.out.println("Group Found");
-                flag=true;
-        }else{
-                System.out.println("Sorry No Group Found");
-            }
-        }
-        if(flag == true)
-        {
+            ArrayList Rows = new ArrayList();
+            
+            DbManager db = new DbManager();
+            java.sql.Connection conn = db.getConnection();
+            if(conn == null)
             {
-                    HttpSession session = request.getSession();
-                    session.setAttribute("group_name", group_name);
-                    RequestDispatcher rd = request.getRequestDispatcher("index.jsp");
+                System.out.println("Connection not established");
+            }
+            else
+            {
+                System.out.println("Connection Established");
+                PreparedStatement pst = conn.prepareStatement("SELECT * FROM groups WHERE g_name like '%" + group_name + "%'");
+                //pst.setString(1, group_name);
+                //pst.setString(2, pass);
+                ResultSet rs = pst.executeQuery();
+                while (rs.next()) 
+                {
+                    ArrayList row = new ArrayList();
+                    for (int i = 1; i <= 3; i++) 
+                    {
+                        row.add(rs.getString(i));
+                        System.out.println("row " + i);
+                    }
+                    Rows.add(row);
+                    System.out.println("Group Found");
+                    flag=true;
+                }
+            }
+            
+            if(flag == true)
+            {
+                {
+                    request.setAttribute("ResultSet", Rows);
+                    request.setAttribute("group_name", group_name);
+                    RequestDispatcher rd = request.getRequestDispatcher("groupsearch.jsp");
                     rd.forward(request, response);   
                 }
         }
