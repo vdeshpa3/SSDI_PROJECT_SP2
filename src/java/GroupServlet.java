@@ -78,7 +78,12 @@ public class GroupServlet extends HttpServlet {
                     RequestDispatcher rd = request.getRequestDispatcher("groupsearch.jsp");
                     rd.forward(request, response);   
                 }
-        }
+            }else
+            {
+                request.setAttribute("TheResultMessage", "No group Found");
+                RequestDispatcher rd = request.getRequestDispatcher("groupsearch.jsp");
+                rd.forward(request, response); 
+            }
         }catch (SQLException e) {
             System.out.println(e);
         }
