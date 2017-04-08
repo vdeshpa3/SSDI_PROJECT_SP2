@@ -3,16 +3,18 @@
 <%@ page import="java.sql.Statement" %>
 <%@ page import="java.sql.PreparedStatement" %> 
 <%@ page import="test.DbManager" %>
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Users Database</title>
-</head>
-<body>
-<table>
+
+<%-- Include tag is used to import header page --%>
+<%@include file="header.jsp" %>
+
+<nav id="menu">
+     <ul><%-- Added the EL tag ${email} to display the users email instead of static name--%>
+            <li><a href="admin.jsp?user=Admin ${email}">Home</a></li>
+     </ul>    <%--On clicking the Reported Question link it will be directed  to the reportques.jsp--%>
+</nav>
+
+<section class="main">
+<table class="table.center">
 <%
 DbManager db = new DbManager();
 java.sql.Connection conn = db.getConnection();
@@ -45,5 +47,6 @@ if(conn == null)
 }
         %>
 </table>
-</body>
-</html>
+</section>
+<%-- Include tag is used to import footer page --%>
+<%@ include file="footer.jsp" %>

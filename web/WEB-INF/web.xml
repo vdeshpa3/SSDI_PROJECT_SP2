@@ -8,6 +8,10 @@
         <servlet-class>LoginValidation</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>CreateGroupServlet</servlet-name>
+        <servlet-class>CreateGroupServlet</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>GroupServlet</servlet-name>
         <servlet-class>GroupServlet</servlet-class>
     </servlet>
@@ -19,6 +23,18 @@
         <servlet-name>RegisterUser</servlet-name>
         <servlet-class>RegisterUser</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>NewPostsServlet</servlet-name>
+        <servlet-class>NewPostsServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>InserOrDeleteServlet</servlet-name>
+        <servlet-class>InserOrDeleteServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>CreateGroupServlet</servlet-name>
+        <url-pattern>/CreateGroupServlet</url-pattern>
+    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>LoginValidation</servlet-name>
         <url-pattern>/LoginValidation</url-pattern>
@@ -34,6 +50,14 @@
     <servlet-mapping>
         <servlet-name>RegisterUser</servlet-name>
         <url-pattern>/RegisterUser</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>NewPostsServlet</servlet-name>
+        <url-pattern>/NewPostsServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>InserOrDeleteServlet</servlet-name>
+        <url-pattern>/InserOrDeleteServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

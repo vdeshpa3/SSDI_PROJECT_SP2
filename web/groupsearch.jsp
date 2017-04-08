@@ -28,6 +28,7 @@ if(conn == null)
         <th>Group_ID</th>
         <th>Group Name</th>
         <th>Group Description</th>
+        <th>Member Limit</th>
         <th>Join</th>
         <%
         while(rs.next())
@@ -38,6 +39,7 @@ if(conn == null)
             <td><%=rs.getInt("g_id") %></td>
 	    <td><a href="<%=rs.getString("g_name")%>.jsp"><%=rs.getString("g_name") %></a></td>
 	    <td><%=rs.getString("g_description") %></td>
+            <td><%=rs.getString("g_group_members")%></td>
             <td><a href="<%=rs.getString("g_name")%>.jsp">Join</a></td></tr>
             
 	 <%}
