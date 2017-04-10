@@ -65,7 +65,7 @@
                     <tr>
                     <td><%=rs.getString("uname") %></td>
                     <td><%=rs.getString("post_text") %></td>
-                    <td><input type="button" id="like_<%=i%>" value="Like" onclick="Insert_or_Delete('<%=rs.getInt("post_id") %>','user','<%=rs.getInt("user_id") %>','like_<%=i%>')"/></td>
+                    <td><input type="button" id="like_<%=i%>" value="Like" onclick="Insert_or_Delete('<%=rs.getInt("post_id") %>','admin','<%=rs.getInt("user_id") %>','like_<%=i%>')"/></td>
                     </tr>
                  <%}
         }
@@ -92,14 +92,14 @@
                 {
                     if((xmlhttp.responseText) == "liked")
                     {
-                        document.getElementById("like_button_id").innerHTML = "liked";
+                        document.getElementById(like_button_id).value = "liked";
                     }
                     else if((xmlhttp.responseText) == "deleted")
-                        document.getElementById("like_button_id").innerHTML = "deleted";
+                        document.getElementById(like_button_id).value = "deleted";
                 }
             };
             
-            var params= {"post_id":post_id,"role":role,"user_id":user_id};
+            var params= "post_id="+post_id+";role="+role+";user_id="+user_id+";";
             //var params= "g_id="+group_id;
             xmlhttp.open("Post","/SSDI_Project/InserOrDeleteServlet",true);
             xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");

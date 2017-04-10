@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
+//import java.lang.String.split(String regex);
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.CallableStatement;
@@ -77,9 +77,25 @@ public class InserOrDeleteServlet extends HttpServlet {
         String post_id = request.getParameter("post_id");
         String role = request.getParameter("role");
         String user_id = request.getParameter("user_id");
+        //java.lang.String.split(String regex):
+        
+        String[] sentences = post_id.split(";");
+        System.out.println(sentences[0]);
+        System.out.println(sentences[1]);
+        System.out.println(sentences[2]);
+        String roles[]=sentences[1].split("=");
+        System.out.println(roles[1]);
+        String user_ids[] = sentences[2].split("=");
+        System.out.println(user_ids[1]);
+        String user_role= roles[1];
+        String user_userID= user_ids[1];
+        
+        
+        
         System.out.println(user_id);
         System.out.println(role);
         System.out.println(post_id);
+        
         try
         {
             DbManager db = new DbManager();
@@ -91,9 +107,9 @@ public class InserOrDeleteServlet extends HttpServlet {
             {
                 System.out.println("Connection Established");
                 CallableStatement  myproc = conn.prepareCall("call Insert_or_Delete(?,?,?,?)");
-                myproc.setString(1,role);
-                myproc.setString(2,user_id);
-                myproc.setString(3,post_id);          
+                myproc.setString(1,user_role);
+                myproc.setString(2,user_userID);
+                myproc.setString(3,sentences[0]);          
                 myproc.registerOutParameter(4,Types.INTEGER);
                 myproc.execute();
                 int theCount = myproc.getInt(4);
