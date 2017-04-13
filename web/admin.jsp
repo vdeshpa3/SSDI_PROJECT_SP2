@@ -6,8 +6,8 @@
 <%-- Code to display items in List --%>
 <nav id="menu">
      <ul><%-- Added the EL tag ${email} to display the users email instead of static name--%>
-            <li><a href="admin.jsp?user=Admin ${email}">Home</a></li>
-            <li><a href="create_group.jsp?user= Admin ${email} ">Create Group</a></li>
+            <li><a href="admin.jsp?user=${role} ${email}">Home</a></li>
+            <li><a href="create_group.jsp?user=${role} ${email} ">Create Group</a></li>
      </ul>    <%--On clicking the Reported Question link it will be directed  to the reportques.jsp--%>
 </nav>
 <%-- Section tag is used to write description  --%>
@@ -18,7 +18,7 @@
     <input type="submit" value="Search" id="search_button" >
     </form>
     <br>
-</section>
+    <h4><b>GROUPS</b></h4>
     <div id = "groupsManagement">
         <%
         DbManager db = new DbManager();
@@ -46,7 +46,8 @@
         }
                 %>
         </div>
-    <script>
+
+        <script>
         function getToGroup(group_name)
         {
             window.location.href = group_name+".jsp";
@@ -70,5 +71,6 @@
             xmlhttp.send(params);
         }
     </script>
-<%-- Include tag is used to import footer page --%>
-<%@ include file="footer.jsp" %>
+ </section>
+</body>
+</html>

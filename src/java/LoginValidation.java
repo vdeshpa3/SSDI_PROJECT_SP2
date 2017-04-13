@@ -37,7 +37,7 @@ public class LoginValidation extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            
+        String role = null;
         String user = request.getParameter("email");
         String pass = request.getParameter("password");
         boolean flag;
@@ -51,12 +51,14 @@ public class LoginValidation extends HttpServlet {
         }else
         {
             System.out.println("Connection Established");
-            PreparedStatement pst = conn.prepareStatement("Select u_emailid,u_password from users where u_emailid=? and u_password=?");
+            PreparedStatement pst = conn.prepareStatement("select r.role_name as role, u.u_emailid as email, u.u_password as password from users u, roles r, role_user_relationship rup\n" +
+"where r.role_id = rup.role_id and rup.u_id = u.u_id and u.u_emailid = ? and u.u_password = ?");
             pst.setString(1, user);
             pst.setString(2, pass);
             ResultSet rs = pst.executeQuery();
-            if (rs.next()) {
-                out.println("Correct login credentials");
+            while(rs.next()) {
+                role = rs.getString("role");
+                System.out.println("Correct login credentials");
                 flag=true;
             } 
             
@@ -69,11 +71,15 @@ public class LoginValidation extends HttpServlet {
                     HttpSession session = request.getSession();
                     session.setAttribute("email", user);
                     session.setAttribute("password", pass);
+                    session.setAttribute("role", role);
                     RequestDispatcher rd = request.getRequestDispatcher("admin.jsp");
                     rd.forward(request, response);   
                 }
         else{
             System.out.println("Please enter correct credentials to login ");
+            request.setAttribute("msgForNotLogin", "Password or username does not match. Please re-enter.");
+            RequestDispatcher rd = request.getRequestDispatcher("/login.jsp");
+            rd.forward(request, response);
         }
     }
 }

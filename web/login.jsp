@@ -4,6 +4,7 @@
 
 <section id="login_form">
     <%-- Code to create login form--%>
+    <center><h3 style="color: red">${msgForNotLogin}</h3></center>
     <form action="LoginValidation" method="Post"><%--Sending the login username and password to the LoginValidationServlet 
                                                          for validation Admin username : admin@gmail.com and Password : admin
                                                             user username:aks@gmail.com  Password : aks --%> 

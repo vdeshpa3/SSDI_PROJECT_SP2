@@ -88,7 +88,7 @@ public class InserOrDeleteServlet extends HttpServlet {
         String user_ids[] = sentences[2].split("=");
         System.out.println(user_ids[1]);
         String user_role= roles[1];
-        String user_userID= user_ids[1];
+        String email_id= user_ids[1];
         
         
         
@@ -108,7 +108,7 @@ public class InserOrDeleteServlet extends HttpServlet {
                 System.out.println("Connection Established");
                 CallableStatement  myproc = conn.prepareCall("call Insert_or_Delete(?,?,?,?)");
                 myproc.setString(1,user_role);
-                myproc.setString(2,user_userID);
+                myproc.setString(2,email_id);
                 myproc.setString(3,sentences[0]);          
                 myproc.registerOutParameter(4,Types.INTEGER);
                 myproc.execute();
@@ -116,11 +116,11 @@ public class InserOrDeleteServlet extends HttpServlet {
                 System.out.println(theCount);
                 if (theCount == 0) 
                 {
-                    response.getOutputStream().print("deleted");
+                    response.getOutputStream().print("Deleted");
                 }
                 else if(theCount == 1)
                 {
-                    response.getOutputStream().print("liked");
+                    response.getOutputStream().print("Liked");
                 }
             }
         }catch (SQLException e) {

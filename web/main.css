@@ -8,6 +8,17 @@ and open the template in the editor.
     Author     : Akshay
 */
 
+/*GroupsResult.jsp Display*/
+table.center {
+    margin-left:auto; 
+    margin-right:auto;
+  }
+  
+  /***********************/
+
+
+
+
 /*Common CSS***************************/
 
 body {
@@ -22,7 +33,6 @@ table, th, td{
     border:1px solid white;
     padding: 1em;
     border-collapse: collapse;
-
 }
 tr:nth-child(even) {
     background-color: #D3D3CF;
@@ -315,6 +325,40 @@ nav#menu ul li a {
     border-color: #475D9F;
     border-radius: 0.5em;
 }
+
+
+/* create_group_form.jsp*/
+
+
+#Create_group_form{
+    margin: 0 auto;
+    width : 500px;
+    margin-bottom: 100px;
+    margin-top: 100px;
+    padding : 1em;
+}
+
+#Create_group_button {
+    /* To position the buttons to the same position of the text fields */
+    /* same size as the label elements */
+    margin-left: 220px;
+    width:150px;
+    margin-top: 30px;
+    background-color: #475D9F;
+    color: white;
+    margin-bottom: 50px;
+    border-color: #475D9F;
+    border-radius: 0.5em;
+}
+
+
+
+
+
+
+
+
+/**********************************/
 /* newstudy.jsp *********************************/
 
 #newstudy_form{
