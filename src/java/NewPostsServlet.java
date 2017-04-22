@@ -6,9 +6,11 @@
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -19,9 +21,9 @@ import test.DbManager;
 
 /**
  *
- * @author Akshay
+ * @author Viranchi
  */
-public class LoginValidation extends HttpServlet {
+public class NewPostsServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -36,10 +38,10 @@ public class LoginValidation extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
             
-        String user = request.getParameter("email");
-        String pass = request.getParameter("password");
+        String text1 = request.getParameter("input1");
+        String group_name = request.getParameter("group_name");
+        System.out.println(group_name);
         boolean flag;
         flag=false;
         try{
@@ -50,15 +52,20 @@ public class LoginValidation extends HttpServlet {
 	System.out.println("Connection not established");
         }else
         {
+            HttpSession session = request.getSession();
             System.out.println("Connection Established");
-            PreparedStatement pst = conn.prepareStatement("Select username, password from user where username=? and password=?");
-            pst.setString(1, user);
-            pst.setString(2, pass);
-            ResultSet rs = pst.executeQuery();
-            if (rs.next()) {
-                out.println("Correct login credentials");
-                flag=true;
-            } 
+            CallableStatement  myproc = conn.prepareCall("call Insert_Post(?,?,?,?)");
+                myproc.setString(1,session.getAttribute("email").toString());
+                myproc.setString(2,group_name);
+                myproc.setString(3,text1);
+                myproc.registerOutParameter(4,Types.INTEGER);
+                myproc.execute();
+                int theCount = myproc.getInt(4);
+                System.out.println(theCount);
+                if (theCount > 0) 
+                {
+                    flag = true;
+                } 
             
         }
         }catch (SQLException e) {
@@ -66,34 +73,16 @@ public class LoginValidation extends HttpServlet {
         }
         if(flag==true)
                 {
-                    HttpSession session = request.getSession();
-                    session.setAttribute("email", user);
-                    session.setAttribute("password", pass);
-                    RequestDispatcher rd = request.getRequestDispatcher("admin.jsp");
+                    RequestDispatcher rd = request.getRequestDispatcher(group_name+".jsp");
                     rd.forward(request, response);   
                 }
         else{
             System.out.println("Please enter correct credentials to login ");
         }
-    }
-}
-    
-    
-    
-    /*
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet LoginValidation</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet LoginValidation at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+            /* TODO output your page here. You may use following sample code. */
         }
     }
-*/
-    
+
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.

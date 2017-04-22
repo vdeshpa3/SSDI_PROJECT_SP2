@@ -1,0 +1,40 @@
+CREATE DEFINER=`root`@`localhost` PROCEDURE `Delete_Group1`(IN group_id int, OUT the_count INT)
+BEGIN
+	Delete from post_user_group_relationship where g_id = group_id;
+    
+    Delete from group_user_relationship
+    where g_id = group_id;
+                
+	Delete from groups
+    where g_id = group_id;
+                
+	select count(*) INTO the_count from groups
+    where g_id = group_id;
+END
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `Insert_or_Delete`(In role_name varchar(10),IN input_u_id INT, In input_Post_id INT, OUT theCount INT)
+BEGIN
+	if (role_name = 'admin') then
+		delete from post_user_group_relationship where p_id = input_post_id;
+        delete from posts where post_id = input_post_id;
+        select count(post_id) into theCount from posts where post_id = input_post_id; 
+    else
+		Insert into likes(post_id,u_id) values (input_post_id,input_u_id);
+        select count(*) into theCount from likes where u_id = input_u_id and post_id = input_post_id; 
+	end if;
+END
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `Insert_Post`(IN email_ID varchar(60), IN group_name varchar(60), IN post_text varchar(10000), OUT theCount INT)
+BEGIN
+	insert into posts(post) values(post_text);
+    
+    select @post_id := post_id from posts where post = post_text;
+    select @group_id := g_id from groups where g_name = group_name;
+    select @user_id := u_id from users where u_emailid = email_ID;
+    
+    insert into post_user_group_relationship(u_id,g_id,p_id) values(@user_id, @group_id, @post_id);
+    
+    select count(*) into theCount from post_user_group_relationship
+    where u_id = @user_id and g_id = @group_id and p_id = @post_id;
+    
+END

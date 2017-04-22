@@ -1,7 +1,7 @@
 <%-- 
-    Document   : RegisterResult
-    Created on : 26 Mar, 2017, 1:10:20 PM
-    Author     : Viranchi
+    Document   : GroupResult
+    Created on : Apr 5, 2017, 2:58:10 PM
+    Author     : Akshay
 --%>
 
 <%-- Include tag is used to import header page --%>
@@ -13,8 +13,8 @@
 </nav>
 <section class="main">
      <h1><%= request.getAttribute("Result") %></h1>
-        <p> click <a href ="home.jsp">here</a> to go to Home
+     <p> click <a href ="admin.jsp?user=Admin ${email}">here</a> to go to Home
         </p>
-</section>
+       </section>
     <%-- Include tag is used to import footer page --%>
 <%@include file="footer.jsp" %>

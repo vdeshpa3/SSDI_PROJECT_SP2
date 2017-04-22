@@ -24,6 +24,21 @@
             alert("Join request cannot be sent as the group limit has been reached");
             //document.getElementById("signup_button").value = "Request Sent";
         }
+        
+        function ShowText()
+        {
+            //var post_group_button = document.getElementById("post_group_button").value;
+            //var h = document.input1;
+            //h.style.visibility="visible";
+            document.getElementById("text1").style.visibility="visible";
+            //document.getElementsByName("input1").style.visibility="visible";
+            //document.getElementsByName("input1").style.display="block";
+            //var h = document.input1;
+              //h.style.visibility="visible";
+
+
+    //        document.getElementById("input1").style.visibility = "visible";
+        }        
         </script>
 <%-- Include tag is used to import footer page --%>
 <%@ include file="footer.jsp" %>

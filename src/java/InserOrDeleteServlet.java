@@ -6,23 +6,20 @@
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import java.sql.CallableStatement;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import javax.servlet.RequestDispatcher;
+import java.sql.Types;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import test.DbManager;
 
 /**
  *
- * @author Akshay
+ * @author Viranchi
  */
-public class GroupServlet extends HttpServlet {
+public class InserOrDeleteServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -36,54 +33,18 @@ public class GroupServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        
-        String group_name = request.getParameter("search_group");
-        boolean flag = false;
-        try
-        {
-            ArrayList Rows = new ArrayList();
-            
-            DbManager db = new DbManager();
-            java.sql.Connection conn = db.getConnection();
-            if(conn == null)
-            {
-                System.out.println("Connection not established");
-            }
-            else
-            {
-                System.out.println("Connection Established");
-                PreparedStatement pst = conn.prepareStatement("SELECT * FROM groups WHERE g_name like '%" + group_name + "%'");
-                //pst.setString(1, group_name);
-                //pst.setString(2, pass);
-                ResultSet rs = pst.executeQuery();
-                while (rs.next()) 
-                {
-                    ArrayList row = new ArrayList();
-                    for (int i = 1; i <= 3; i++) 
-                    {
-                        row.add(rs.getString(i));
-                        System.out.println("row " + i);
-                    }
-                    Rows.add(row);
-                    System.out.println("Group Found");
-                    flag=true;
-                }
-            }
-            
-            if(flag == true)
-            {
-                {
-                    request.setAttribute("ResultSet", Rows);
-                    request.setAttribute("group_name", group_name);
-                    RequestDispatcher rd = request.getRequestDispatcher("index.jsp");
-                    rd.forward(request, response);   
-                }
+        try (PrintWriter out = response.getWriter()) {
+            /* TODO output your page here. You may use following sample code. */
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet InserOrDeleteServlet</title>");            
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Servlet InserOrDeleteServlet at " + request.getContextPath() + "</h1>");
+            out.println("</body>");
+            out.println("</html>");
         }
-        }catch (SQLException e) {
-            System.out.println(e);
-        }
-        
-        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -111,8 +72,44 @@ public class GroupServlet extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        processRequest(request, response);
+            throws ServletException, IOException 
+    {
+        String post_id = request.getParameter("post_id");
+        String role = request.getParameter("role");
+        String user_id = request.getParameter("user_id");
+        System.out.println(user_id);
+        System.out.println(role);
+        System.out.println(post_id);
+        try
+        {
+            DbManager db = new DbManager();
+            java.sql.Connection conn = db.getConnection();
+            if(conn == null)
+            {
+                System.out.println("Connection not established");
+            }else
+            {
+                System.out.println("Connection Established");
+                CallableStatement  myproc = conn.prepareCall("call Insert_or_Delete(?,?,?,?)");
+                myproc.setString(1,role);
+                myproc.setString(2,user_id);
+                myproc.setString(3,post_id);          
+                myproc.registerOutParameter(4,Types.INTEGER);
+                myproc.execute();
+                int theCount = myproc.getInt(4);
+                System.out.println(theCount);
+                if (theCount == 0) 
+                {
+                    response.getOutputStream().print("deleted");
+                }
+                else if(theCount == 1)
+                {
+                    response.getOutputStream().print("liked");
+                }
+            }
+        }catch (SQLException e) {
+            System.out.println(e);
+        }
     }
 
     /**
