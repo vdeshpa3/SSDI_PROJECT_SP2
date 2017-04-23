@@ -4,6 +4,8 @@
  * and open the template in the editor.
  */
 
+import Data.GroupDB;
+import Model.Group;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.CallableStatement;
@@ -12,6 +14,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -105,7 +110,73 @@ public class GroupServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+            
+        System.out.println("Reached Get Method");
+            String action = request.getParameter("action");
+            
+            
+            Group group = new Group();
+            String groupName = request.getParameter("action");
+            
+            System.out.println(groupName);
+            try {
+                    List<Group> group2 = GroupDB.getGroup(groupName);;
+                    System.out.println(group2.get(0).getGroupID());
+                    request.setAttribute("groups", group2);
+                    request.setAttribute("groupName", groupName);
+                    RequestDispatcher rd = request.getRequestDispatcher("DisplayGroup.jsp");
+                    rd.forward(request, response);
+            } catch (ClassNotFoundException ex) {
+                        Logger.getLogger(GroupServlet.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (SQLException ex) {
+                        Logger.getLogger(GroupServlet.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+            
+            
+                
+                
+                
+                /*
+            HttpSession session = request.getSession();
+            System.out.println("Reached Get mathod");
+  
+            Group group = new Group();
+            String groupName = request.getParameter("search_group");
+            
+            System.out.println(groupName);
+            group = GroupDB.getGroup(groupName);
+            System.out.println(group.getGroupName());
+            System.out.println(group.getGroupDescription());
+            
+            request.setAttribute("groups", group);
+            RequestDispatcher rd = request.getRequestDispatcher("groups_1.jsp");
+            rd.forward(request, response);
+            
+            
+
+//Group tableGroupName =GroupDB.getGroup(groupName);
+            
+            
+            
+            //if(userType.equalsIgnoreCase("Participant")) {
+            //session.setAttribute("theUser", user);
+            //int participants = StudyDB.getParticipants(user.getEmail());
+            //session.setAttribute("par", participants);
+            //RequestDispatcher rd = request.getRequestDispatcher("main.jsp");
+            //rd.forward(request, response);
+            //url = "/main.jsp";
+            //} else if (userType.equalsIgnoreCase("Administrator")) {
+            //session.setAttribute("theAdmin", user);
+            //RequestDispatcher rd = request.getRequestDispatcher("main.jsp");
+            //rd.forward(request, response);
+            //url = "/admin.jsp";
+            //}
+            //processRequest(request, response);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(GroupServlet.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(GroupServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }*/
     }
 
     /**
@@ -120,35 +191,74 @@ public class GroupServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException 
     {
-        boolean flag = false;
-        String g_id = request.getParameter("g_id");
-        try
-        {
+        //String actions= request.getParameterValues("search_button");
+        //System.out.println(actions);
+        try {
+          //  if(actions.equalsIgnoreCase("search_group")){
+            HttpSession session = request.getSession();
+            System.out.println("Reached Post mathod");
+  
+            Group group = new Group();
+            String groupName = request.getParameter("search_group");
+            
+            System.out.println(groupName);
+            if(groupName.isEmpty() || groupName.equalsIgnoreCase(" ")){
+               List<Group> group1 = GroupDB.getGroups();
+                request.setAttribute("groups", group1);
+                System.out.println("Group Name is empty");
+                for(int i =0;i<group1.size();i++){
+                   
+                    System.out.println(group1.get(i).getGroupID());
+                }
+                RequestDispatcher rd = request.getRequestDispatcher("index.jsp");
+                rd.forward(request, response);
+                
+            }else if(!groupName.isEmpty()){
+            List<Group> group2 = GroupDB.getGroup(groupName);
+            //System.out.println(group.getGroupName());
+            //System.out.println(group.getGroupDescription());
+            
+            request.setAttribute("groups", group2);
+            RequestDispatcher rd = request.getRequestDispatcher("groups_1.jsp");
+            rd.forward(request, response);
+            
+            }
+             
+            
+            /* boolean flag = false;
+            String g_id = request.getParameter("g_id");
+            try
+            {
             DbManager db = new DbManager();
             java.sql.Connection conn = db.getConnection();
             if(conn == null)
             {
-                System.out.println("Connection not established");
+            System.out.println("Connection not established");
             }else
             {
-                System.out.println("Connection Established");
-                CallableStatement  myproc = conn.prepareCall("call Delete_Group1(?,?)");
-                myproc.setString(1,g_id);
-                myproc.registerOutParameter(2,Types.INTEGER);
-                myproc.execute();
-                int theCount = myproc.getInt(2);
-                if (theCount == 0) 
-                {
-                    flag = true;
-                }
+            System.out.println("Connection Established");
+            CallableStatement  myproc = conn.prepareCall("call Delete_Group1(?,?)");
+            myproc.setString(1,g_id);
+            myproc.registerOutParameter(2,Types.INTEGER);
+            myproc.execute();
+            int theCount = myproc.getInt(2);
+            if (theCount == 0)
+            {
+            flag = true;
             }
-        }catch (SQLException e) {
+            }
+            }catch (SQLException e) {
             System.out.println(e);
-        }
-        finally
-        {
+            }
+            finally
+            {
             if(flag)
             response.getOutputStream().print("the group is deleted");
+            }*/
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(GroupServlet.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(GroupServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

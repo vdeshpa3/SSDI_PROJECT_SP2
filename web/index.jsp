@@ -5,6 +5,8 @@
 <%@ page import="test.DbManager" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" 
+           uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -12,38 +14,22 @@
 <title>Users Database</title>
 </head>
 <body>
-<table>
-<%
-DbManager db = new DbManager();
-java.sql.Connection conn = db.getConnection();
-if(conn == null)
-{
-	out.print("Connection not established");
-}else
-{
-	//out.print("Connection Established");
-	String query="SELECT * FROM groups WHERE g_name like '%" + request.getAttribute("group_name") + "%'";
-	Statement stmt=conn.createStatement();
-	ResultSet rs=stmt.executeQuery(query);  
-	%>
-        <th>Group_ID</th>
+    <h5>${group1.groupId}</h5>
+    
+      <table>
+         <th>Group_ID</th>
         <th>Group Name</th>
         <th>Group Description</th>
-        <th>Join</th>
-        <%
-        while(rs.next())
-	{
-
-	%>
-	    <tr>
-            <td><%=rs.getInt("g_id") %></td>
-	    <td><a href="<%=rs.getString("g_name")%>.jsp"><%=rs.getString("g_name") %></a></td>
-	    <td><%=rs.getString("g_description") %></td>
-            <td><a href="<%=rs.getString("g_name")%>.jsp">Join</a></td></tr>
+    <c:forEach var="groups" items="${requestScope.groups}">
+        
+        <tr> 
+            <td>${groups.groupID}</td>
+            <td> <a href="GroupServlet?action=${groups.groupName}">${groups.groupName}</a></td>
+            <td> ${groups.groupDescription} </td>
+            <td>${groups.numberOfGroupMembers} </td>
+        </tr>  
+    </c:forEach>
             
-	 <%}
-}
-        %>
-</table>
+      </table>  
 </body>
 </html>

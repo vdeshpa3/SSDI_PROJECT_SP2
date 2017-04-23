@@ -4,11 +4,15 @@
  * and open the template in the editor.
  */
 
+import Data.UserDB;
+import Model.Users;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -33,7 +37,7 @@ public class LoginValidation extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, IOException, ClassNotFoundException, SQLException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
@@ -51,8 +55,8 @@ public class LoginValidation extends HttpServlet {
         }else
         {
             System.out.println("Connection Established");
-            PreparedStatement pst = conn.prepareStatement("select r.role_name as role, u.u_emailid as email, u.u_password as password from users u, roles r, role_user_relationship rup\n" +
-"where r.role_id = rup.role_id and rup.u_id = u.u_id and u.u_emailid = ? and u.u_password = ?");
+            PreparedStatement pst = conn.prepareStatement("select r.role as role, u.u_email as email, u.u_password as password from users u, roles r, role_user_relationship rup\n" +
+"where r.role_id = rup.role_id and rup.u_uid = u.u_id and u.u_email = ? and u.u_password = ?");
             pst.setString(1, user);
             pst.setString(2, pass);
             ResultSet rs = pst.executeQuery();
@@ -68,12 +72,32 @@ public class LoginValidation extends HttpServlet {
         }
         if(flag==true)
                 {
+                    
                     HttpSession session = request.getSession();
                     session.setAttribute("email", user);
                     session.setAttribute("password", pass);
                     session.setAttribute("role", role);
-                    RequestDispatcher rd = request.getRequestDispatcher("admin.jsp");
-                    rd.forward(request, response);   
+                    //RequestDispatcher rd = request.getRequestDispatcher("admin.jsp");
+                    //rd.forward(request, response);   
+                    
+                    Users user1 = new Users();
+                    //String userType = user.getUserType();
+                    if(role.equalsIgnoreCase("user")) {
+			session.setAttribute("theUser", user);
+			//int participants = StudyDB.getParticipants(user.getEmail());
+			user1 = UserDB.getUser(user);
+                        session.setAttribute("user", user1);
+                        System.out.println(user1.getUserEmail());
+                        RequestDispatcher rd = request.getRequestDispatcher("userpage.jsp");
+                         rd.forward(request, response);
+			
+			} else if (role.equalsIgnoreCase("Admin")) {
+			session.setAttribute("theAdmin", user);
+                        RequestDispatcher rd = request.getRequestDispatcher("admin.jsp");
+                        rd.forward(request, response);
+			}
+                
+                
                 }
         else{
             System.out.println("Please enter correct credentials to login ");
@@ -112,7 +136,13 @@ public class LoginValidation extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(LoginValidation.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(LoginValidation.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -126,7 +156,13 @@ public class LoginValidation extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(LoginValidation.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(LoginValidation.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**

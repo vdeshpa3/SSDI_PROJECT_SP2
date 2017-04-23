@@ -31,6 +31,14 @@
         <servlet-name>InserOrDeleteServlet</servlet-name>
         <servlet-class>InserOrDeleteServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>DisplayDynamicGroupServlet</servlet-name>
+        <servlet-class>DisplayDynamicGroupServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DisplayDG</servlet-name>
+        <servlet-class>DisplayDG</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>CreateGroupServlet</servlet-name>
         <url-pattern>/CreateGroupServlet</url-pattern>
@@ -58,6 +66,14 @@
     <servlet-mapping>
         <servlet-name>InserOrDeleteServlet</servlet-name>
         <url-pattern>/InserOrDeleteServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DisplayDynamicGroupServlet</servlet-name>
+        <url-pattern>/DisplayDynamicGroupServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DisplayDG</servlet-name>
+        <url-pattern>/DisplayDG</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

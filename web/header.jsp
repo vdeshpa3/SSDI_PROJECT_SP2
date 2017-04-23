@@ -20,15 +20,15 @@
                     <li>Click &AMP; Connect</li>
                 </ul>
                 <ul class="right">
-                    <c:if test="${email == null}">
+                    <c:if test="${role == null}">
                         <li><a href="about.jsp">About Us</a></li>
                         <li><a href="login.jsp">Login</a></li>
                         <li><a href="signup.jsp">Sign Up</a></li>
                     </c:if>
-                        <c:if test="${email != null}">
-                        <li><a href="aboutl.jsp?user=Hello,${email}">About Us</a></li>
+                        <c:if test="${user.getUserEmail() != null}">
+                        <li><a href="aboutl.jsp?user=Hello,${user.getUserName()}">About Us</a></li>
                         <li><a href="<%=request.getContextPath()%>/LogOutServlet">Log Out</a></li>
-                        <li>Hello, ${email}</li>
+                        <li>Hello, ${user.getUserName()}</li>
                         </c:if>
                 </ul>
 
